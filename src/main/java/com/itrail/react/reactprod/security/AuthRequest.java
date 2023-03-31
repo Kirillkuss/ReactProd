@@ -1,6 +1,7 @@
 package com.itrail.react.reactprod.security;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthRequest {
-
+    @Schema( name = "username",
+            description = "username",
+            example = "admin")
     private String username;
+    @Schema( name = "password",
+            description = "password",
+            example = "admin")
     private String password;
 }

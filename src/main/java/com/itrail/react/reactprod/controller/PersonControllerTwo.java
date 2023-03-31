@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,6 +26,18 @@ public class PersonControllerTwo {
     @Autowired
     PersonServiceTwo service;
 
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    public void sendMessage(String msg) {
+        kafkaTemplate.send("ReactTopic-1", msg);
+    }
+
+    @KafkaListener( topics = "ReactTopic-2", groupId = "test_topics")
+    public void getMessageTwo(String msg){
+        System.out.println( msg );
+    }
+
     @GetMapping("/allPerson")
     @Operation( description = "Получение списка Person", summary = "Получение списка Person")
     @ApiResponses(value = {
@@ -32,6 +46,7 @@ public class PersonControllerTwo {
             @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json") })
     })
     public Flux<Person> getAllPerson() throws Exception{
+        sendMessage( "ReactProd -- getAllPerson");
         return service.allPerson();
     }
 
@@ -43,6 +58,7 @@ public class PersonControllerTwo {
             @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json") })
     })
     public Mono<Person> findByIdPerson(Long id ) throws Exception{
+        sendMessage( "ReactProd -- findByIdPerson" + service.findByIdPerson( id).toString() );
         return service.findByIdPerson( id );
     }
 
@@ -54,6 +70,7 @@ public class PersonControllerTwo {
             @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json") })
     })
     public Mono<Person>  updatePerson( Person person ) throws Exception{
+        sendMessage( "ReactProd -- updatePerson");
         return service.updatePerson( person );
     }
     @Operation( description = "Удаление Person", summary = "Удаление Person")
@@ -75,6 +92,7 @@ public class PersonControllerTwo {
             @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json") })
     })
     public Mono<Person> addPerson( Person person ) throws Exception{
+        sendMessage( "ReactProd -- addPerson");
         return service.addPerson(person);
     }
 }

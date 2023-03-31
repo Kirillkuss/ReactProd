@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public interface PersonRepository extends ReactiveCrudRepository<Person, Long> {
 
     @Modifying
-    @Query( "INSERT INTO personl ( id, name, login, phone, wallet) VALUES ( :id, :name, :login, :phone, :wallet )" )
+    @Query( "INSERT INTO person ( id, name, login, phone, wallet) VALUES ( :id, :name, :login, :phone, :wallet )" )
     Mono<Person> createPerson( @Param( "id" ) Long id,
                                @Param( "name" ) String name,
                                @Param( "login" ) String login,
