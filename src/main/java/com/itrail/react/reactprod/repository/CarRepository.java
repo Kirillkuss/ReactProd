@@ -13,10 +13,10 @@ import java.time.LocalDateTime;
 public interface CarRepository extends ReactiveCrudRepository<Car, Long> {
 
     @Modifying
-    @Query("INSERT INTO car ( id, model, timeBuy, coast, number ) VALUES ( :id, :model, :timeBuy, :coast, :number)")
+    @Query("INSERT INTO car ( id, model, timebuy, coast, number ) VALUES ( :id, :model, :timebuy, :coast, :number)")
     Mono<Car> createCar( @Param("id") Long id,
                          @Param("model") String model,
-                         @Param("timeBuy") LocalDateTime timeBuy,
+                         @Param("timebuy") LocalDateTime timeBuy,
                          @Param("coast") BigDecimal coast,
                          @Param("number") Integer number );
 }

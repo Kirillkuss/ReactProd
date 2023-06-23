@@ -27,9 +27,10 @@ public class Car {
             example     = "Audi")
     private String        model;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @Schema( name        = "timeBuy")
-    private LocalDateTime timeBuy;
+    @Schema( name        = "timebuy")
+    private LocalDateTime timebuy;
     @Schema( name        = "coast",
             description = "Цена",
             example     = "57300")
@@ -39,10 +40,10 @@ public class Car {
             example     = "9922")
     private Integer       number;
 
-    public Car(Long id, String model, LocalDateTime timeBuy, BigDecimal coast, Integer number) {
+    public Car(Long id, String model, LocalDateTime timebuy, BigDecimal coast, Integer number) {
         this.id = id;
         this.model = model;
-        this.timeBuy = timeBuy;
+        this.timebuy = timebuy;
         this.coast = coast;
         this.number = number;
     }
