@@ -1,4 +1,4 @@
-package com.itrail.react.reactprod.myexception;
+package com.itrail.react.reactprod.exc;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class MyException extends Exception{
 
-    private int code = 999;
+    private int code;
 
     public MyException(){
     }

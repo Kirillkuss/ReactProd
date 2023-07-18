@@ -1,6 +1,7 @@
 package com.itrail.react.reactprod.service;
 
 import com.itrail.react.reactprod.entity.Person;
+import com.itrail.react.reactprod.exc.MyException;
 import com.itrail.react.reactprod.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,15 +19,16 @@ public class PersonService {
     }
 
     public Mono<Person> findByIdPerson( Long id ) throws Exception{
-        return  repository.findById( id );
-
+        return  repository.findById( id ).switchIfEmpty( Mono.error( new MyException( 400 , "Нет клинта с таким ИД")));
     }
 
     public Mono<Person> updatePerson( Person person ) throws Exception{
+        repository.findById( person.getId() ).switchIfEmpty( Mono.error( new MyException( 400 , "Нет клинта с таким ИД")));
           return repository.save( person );
     }
 
     public Mono<Void>  deletePerson( Long id ) throws Exception{
+        //repository.findById( id ).switchIfEmpty( Mono.error( new MyException( 400 , "Нет клинта с таким ИД")));
         return repository.deleteById( id );
     }
 

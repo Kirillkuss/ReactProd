@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class BaseResponse<T> {
 
-    private int code = 999;
+    private int code;
     private String message = "System mallfunction";
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;

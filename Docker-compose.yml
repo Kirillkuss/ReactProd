@@ -5,30 +5,16 @@ volumes:
 
 services:
   reactpro:
-    image: reactpro
+    image: kirillkus/react
     ports:
       - "8082:8080"
     build:
       context: .
-    container_name: reactpro
-    depends_on:
-      - pg_db_react
+    container_name: react
     environment:
-      - spring_r2dbc_url=r2dbc:postgresql://localhost:5432/postgres
-      - spring_r2dbc_username=postgres
-      - spring_r2dbc_password=1111
+      - SPRING_R2DBC_URL=r2dbc:postgresql://host.docker.internal:5432/postgres
+      - JAVA_OPTS="-XX:+UseG1GC -XX:MaxRAMPercentage=75"
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=broker:29092
-
-  pg_db_react:
-    image: postgres
-    environment:
-      - POSTGRES_PASSWORD=1111
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=postgres
-    volumes:
-      - pg_project:/var/lib/postgresql/data
-    ports:
-      - ${POSTGRES_PORT:-5435}:5432
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0

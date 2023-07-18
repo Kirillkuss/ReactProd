@@ -1,6 +1,7 @@
 package com.itrail.react.reactprod.service;
 
 import com.itrail.react.reactprod.entity.Car;
+import com.itrail.react.reactprod.exc.MyException;
 import com.itrail.react.reactprod.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,14 +19,14 @@ public class CarService {
     }
 
     public Mono<Car> findCarById(Long id ) throws Exception{
-        return repository.findById( id );
+        return repository.findById( id ).switchIfEmpty( Mono.error( new MyException( 400 , "Нет авто с таким ИД")));
     }
 
     public Mono<Car> updateCar( Car car ) throws Exception{
         return repository.save( car );
     }
 
-    public Mono<Void> deleteCar( Long id ) throws Exception{
+    public Mono deleteCar( Long id ) throws Exception{
         return repository.deleteById( id );
     }
 
