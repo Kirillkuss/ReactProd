@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 //http://localhost:8081/webjars/swagger-ui/index.html
 
+@Slf4j
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "API for React", version = "3.0", description = "REACT"))
 @SecurityScheme(
@@ -18,7 +19,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         bearerFormat = "JWT",
         scheme = "bearer"
 )
-@Slf4j
 public class ReactProdApplication {
 
     public static void main(String[] args) {

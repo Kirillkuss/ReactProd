@@ -4,15 +4,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.itrail.react.reactprod.entity.Car;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -21,7 +19,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RequestMapping(value = "cars")
-@Tag( name = "CARS", description = "CRUD for CAR")
+@Tag( name = "2. CARS", description = "CRUD for CAR")
 @SecurityRequirement(name = "Bearer Authentication")
 public interface ICar {
 
@@ -50,7 +48,7 @@ public interface ICar {
         @ApiResponse( responseCode = "400", description = "Bad request",       content = { @Content(mediaType = "application/json") }),
         @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json") })
     })
-    public Mono<Car> updateCar( @RequestBody Car car ) throws Exception;
+    public Mono<Car> updateCar( Car car ) throws Exception;
 
     @PutMapping( "/create")
     @Operation( description = "Добавление Car", summary = "Добавление Car")
@@ -59,7 +57,7 @@ public interface ICar {
         @ApiResponse( responseCode = "400", description = "Bad request",       content = { @Content(mediaType = "application/json") }),
         @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json") })
     })
-    public Mono<Car> createCar( @RequestBody Car car ) throws Exception;
+    public Mono<Car> createCar( Car car ) throws Exception;
 
     @DeleteMapping( "/delete/{id}")
     @Operation( description = "Удаление Car", summary = "Удаление Car")

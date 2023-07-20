@@ -6,8 +6,8 @@ import com.itrail.react.reactprod.responses.BaseResponse;
 import com.itrail.react.reactprod.rest.IPerson;
 import com.itrail.react.reactprod.service.PersonService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class PersonController implements IPerson {
 
     @ExceptionHandler(Throwable.class)
@@ -31,19 +32,16 @@ public class PersonController implements IPerson {
         return Flux.just( new BaseResponse<>( ex.getCode(), ex.getMessage() ));
     }  
 
-    @Autowired
-    PersonService service;
-
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private final PersonService service;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     public void sendMessage(String msg) {
-        kafkaTemplate.send("ReactTopic-1", msg);
+        kafkaTemplate.send("TopicOne", msg);
     }
 
-    @KafkaListener( topics = "ReactTopic-2", groupId = "test_topics")
-    public void getMessageTwo(String msg){
-        System.out.println( msg );
+    @KafkaListener( topics = "TopicTwo", groupId = "MyGroupTopics")
+    public void getMessageTwo(String message ){
+       log.info( message );
     }
 
     public Flux<Person> getAllPerson() throws Exception{
@@ -58,7 +56,6 @@ public class PersonController implements IPerson {
 
     public Mono<Person>  updatePerson( Person person ) throws Exception{
         sendMessage( "ReactProd -- updatePerson");
-        log.info( "<<UPDATE PERSON>>");
         return service.updatePerson( person );
     }
 

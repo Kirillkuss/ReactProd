@@ -19,16 +19,16 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @SecurityRequirement(name = "Bearer Authentication")
-@RequestMapping("persons")
-@Tag( name = "PERSONS", description = "CRUD for PERSON")
+@RequestMapping(" persons")
+@Tag( name = "3. PERSONS", description = "CRUD for PERSON")
 public interface IPerson {
 
     @GetMapping("/all-persons")
     @Operation( description = "Получение списка Person", summary = "Получение списка Person")
     @ApiResponses(value = {
-            @ApiResponse( responseCode = "200", description = "Found the  list Person", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = Person.class ))) }),
-            @ApiResponse( responseCode = "400", description = "Bad request",            content = { @Content(mediaType = "application/json") }),
-            @ApiResponse( responseCode = "500", description = "System malfunction",     content = { @Content(mediaType = "application/json") })
+        @ApiResponse( responseCode = "200", description = "Found the  list Person", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = Person.class ))) }),
+        @ApiResponse( responseCode = "400", description = "Bad request",            content = { @Content(mediaType = "application/json") }),
+        @ApiResponse( responseCode = "500", description = "System malfunction",     content = { @Content(mediaType = "application/json") })
     })
     public Flux<Person> getAllPerson() throws Exception;
 

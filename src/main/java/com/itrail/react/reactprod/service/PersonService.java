@@ -3,16 +3,16 @@ package com.itrail.react.reactprod.service;
 import com.itrail.react.reactprod.entity.Person;
 import com.itrail.react.reactprod.exc.MyException;
 import com.itrail.react.reactprod.repository.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
+@RequiredArgsConstructor
 public class PersonService {
 
-    @Autowired
-    PersonRepository repository;
+    private final PersonRepository repository;
 
     public Flux<Person> allPerson() throws Exception{
         return repository.findAll() ;

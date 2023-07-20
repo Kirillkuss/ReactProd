@@ -1,10 +1,9 @@
 package com.itrail.react.reactprod.service;
 
+import com.itrail.react.reactprod.entity.Role;
 import com.itrail.react.reactprod.entity.User;
-import com.itrail.react.reactprod.security.Role;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 import java.util.HashMap;

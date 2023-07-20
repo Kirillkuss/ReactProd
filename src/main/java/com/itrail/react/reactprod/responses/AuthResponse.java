@@ -1,4 +1,4 @@
-package com.itrail.react.reactprod.security;
+package com.itrail.react.reactprod.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthResponse {
 
+    private Integer code;
     private String token;
 }

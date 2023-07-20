@@ -3,16 +3,16 @@ package com.itrail.react.reactprod.service;
 import com.itrail.react.reactprod.entity.Car;
 import com.itrail.react.reactprod.exc.MyException;
 import com.itrail.react.reactprod.repository.CarRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
+@RequiredArgsConstructor
 public class CarService {
-
-    @Autowired
-    CarRepository repository;
+    
+    private final CarRepository repository;
 
     public Flux<Car> getAllCar() throws Exception{
         return repository.findAll();
@@ -37,4 +37,5 @@ public class CarService {
                                      car.getCoast(),
                                      car.getNumber() );
     }
+
 }
