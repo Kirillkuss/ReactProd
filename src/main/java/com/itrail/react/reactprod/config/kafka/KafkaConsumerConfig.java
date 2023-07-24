@@ -26,7 +26,7 @@ public class KafkaConsumerConfig {
         props.put( ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress );
         props.put( ConsumerConfig.GROUP_ID_CONFIG, "12345");
         props.put( ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put( ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put( ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "com.itrail.react.reactprod.config.kafka.serializer.AnimalDeserializer");
         return new DefaultKafkaConsumerFactory<>(props);
     }
 
