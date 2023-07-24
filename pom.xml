@@ -90,8 +90,11 @@
             <version>0.11.2</version>
             <scope>runtime</scope>
         </dependency>
-
-
+        <!-- Apache Kafka !-->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

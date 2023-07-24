@@ -1,53 +1,71 @@
 package com.itrail.react.reactprod.controller;
 
 import com.itrail.react.reactprod.entity.Person;
+import com.itrail.react.reactprod.exc.MyException;
+import com.itrail.react.reactprod.responses.BaseResponse;
+import com.itrail.react.reactprod.rest.IPerson;
 import com.itrail.react.reactprod.service.PersonService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-//@RestController
-@RequestMapping("/persons")
-public class PersonController {
+@Slf4j
+@RestController
+@RequiredArgsConstructor
+public class PersonController implements IPerson {
 
-    @Autowired
-    private PersonService service;
-
-    @GetMapping("/{id}")
-    @Operation( description = "Получение клинета по ид", summary = "Получение клинета по ид")
-    @ApiResponses(value = {
-            @ApiResponse( responseCode = "200" , description = "Found the person", content = { @Content(mediaType = "application/json") }),
-            @ApiResponse( responseCode = "400", description = "Bad request",content = { @Content(mediaType = "application/json") }),
-            @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json") })
-    })
-    public Mono<Person> findById(@PathVariable("id") Long id ) throws Exception{
-        return  service.findId( id );
+    @ExceptionHandler(Throwable.class)
+    public Flux<BaseResponse> errBaseResponse( Throwable ex ){
+        log.error( ex.getMessage());
+        return Flux.just(  new BaseResponse<>( 500, ex.getMessage() ));
     }
 
-    @GetMapping("/all")
-    @Operation( description = "Получение списка всех клиентов", summary = "Получение списка всех клиентов")
-    @ApiResponses(value = {
-            @ApiResponse( responseCode = "200" , description = "Found the persons", content = { @Content(mediaType = "application/json") }),
-            @ApiResponse( responseCode = "400", description = "Bad request",content = { @Content(mediaType = "application/json") }),
-            @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json") })
-    })
-    public Flux<Person> findAllPerson() throws Exception{
-        return service.findAllPerson();
+    @ExceptionHandler(MyException.class)
+    public Flux<BaseResponse> errBaseResponse( MyException ex ){
+        log.error( ex.getMessage());
+        return Flux.just( new BaseResponse<>( ex.getCode(), ex.getMessage() ));
+    }  
+
+    private final PersonService service;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
+    public void sendMessage(String msg) {
+        kafkaTemplate.send("TopicOne", msg);
     }
 
-    @PostMapping("/add")
-    @Operation( description = "Добавление клиента", summary = "Добавление клиента")
-    @ApiResponses(value = {
-            @ApiResponse( responseCode = "200" , description = "Add person", content = { @Content(mediaType = "application/json") }),
-            @ApiResponse( responseCode = "400", description = "Bad request",content = { @Content(mediaType = "application/json") }),
-            @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json") })
-    })
-    public Mono<Person> addPerson( Person person ){
-        return  service.addPerson( person );
+    @KafkaListener( topics = "TopicTwo", groupId = "MyGroupTopics")
+    public void getMessageTwo(String message ){
+       log.info( message );
     }
+
+    public Flux<Person> getAllPerson() throws Exception{
+        sendMessage( "ReactProd -- getAllPerson");
+        return service.allPerson();
+    }
+
+    public Mono<Person> findByIdPerson(Long id ) throws Exception{
+        sendMessage( "ReactProd -- findByIdPerson" + service.findByIdPerson( id).toString() );
+        return service.findByIdPerson( id );
+    }
+
+    public Mono<Person>  updatePerson( Person person ) throws Exception{
+        sendMessage( "ReactProd -- updatePerson");
+        return service.updatePerson( person );
+    }
+
+    public Mono<Void>  deletePerson( Long id ) throws Exception{
+        return service.deletePerson( id );
+    }
+
+    public Mono<Person> addPerson( Person person ) throws Exception{
+        sendMessage( "ReactProd -- addPerson");
+        return service.addPerson(person);
+    }
+
 }

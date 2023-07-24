@@ -1,4 +1,4 @@
-package com.itrail.react.reactprod.security;
+package com.itrail.react.reactprod.entity;
 
 public enum Role {
 

@@ -1,60 +1,39 @@
 package com.itrail.react.reactprod.service;
 
 import com.itrail.react.reactprod.entity.Person;
+import com.itrail.react.reactprod.exc.MyException;
 import com.itrail.react.reactprod.repository.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import java.math.BigDecimal;
-import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class PersonService {
 
-    @Autowired
-    PersonRepository repository;
+    private final PersonRepository repository;
 
-
-    List<Person> list = new ArrayList<>(Arrays.asList( new Person( 1L, "Test", BigDecimal.ONE ),
-                                                       new Person( 2L, "Pockemon", BigDecimal.TEN ),
-                                                       new Person( 4L, "Person", BigDecimal.valueOf( 134.45 ))));
-    /**
-     * Поиск клината по ИД
-     * @param id - ИД клиента
-     * @return Mono<Person>
-     */
-    public Mono<Person> findId( Long id ){
-        Person response = list.stream()
-                              .filter(f ->Objects.equals( f.getId(), id ))
-                              .findFirst()
-                              .orElse( null );
-        if (  response != null ){
-            return Mono.just( response );
-        }else{
-            return Mono.empty();
-        }
-    }
-    /**
-     * Поиск всех клиентов
-     * @return Flux<Person>
-     */
-    public Flux<Person> findAllPerson(){
-        return Flux.fromIterable( list );
+    public Flux<Person> allPerson() throws Exception{
+        return repository.findAll() ;
     }
 
-
-    public Mono<Person> addPerson( Person person ){
-        list.add( person );
-        Person response = list.stream().filter( f-> Objects.equals( f.getId(), person.getId() )).findFirst().orElse( null );
-        if (  response != null ){
-            return Mono.just( response );
-        } else {
-            return Mono.empty();
-        }
+    public Mono<Person> findByIdPerson( Long id ) throws Exception{
+        return  repository.findById( id ).switchIfEmpty( Mono.error( new MyException( 400 , "Нет клинта с таким ИД")));
     }
 
-    public Flux<Person> getAllRepository() throws Exception{
-        return repository.findAll();
+    public Mono<Person> updatePerson( Person person ) throws Exception{
+        repository.findById( person.getId() ).switchIfEmpty( Mono.error( new MyException( 400 , "Нет клинта с таким ИД")));
+          return repository.save( person );
     }
+
+    public Mono<Void>  deletePerson( Long id ) throws Exception{
+        //repository.findById( id ).switchIfEmpty( Mono.error( new MyException( 400 , "Нет клинта с таким ИД")));
+        return repository.deleteById( id );
+    }
+
+    public Mono<Person> addPerson( Person person ) throws Exception{
+        return repository.createPerson(  person.getId(), person.getName(), person.getLogin(), person.getPhone(), person.getWallet());
+    }
+
 }

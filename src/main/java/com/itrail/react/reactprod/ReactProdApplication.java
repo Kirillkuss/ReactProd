@@ -4,11 +4,13 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 //http://localhost:8081/webjars/swagger-ui/index.html
 
+@Slf4j
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "API for React", version = "3.0", description = "REACT"))
 @SecurityScheme(
@@ -21,7 +23,7 @@ public class ReactProdApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ReactProdApplication.class, args);
-        System.out.println("REACT PRO SUCCESS");
+        log.info("REACT PRO SUCCESS");
     }
 
 }

@@ -2,13 +2,15 @@ package com.itrail.react.reactprod.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.itrail.react.reactprod.security.Role;
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,9 +25,11 @@ public class User implements UserDetails {
     private String username;
 
     private String password;
+
     @Getter
     @Setter
     private Boolean enabled;
+    
     @Getter
     @Setter
     private List<Role> roles;
