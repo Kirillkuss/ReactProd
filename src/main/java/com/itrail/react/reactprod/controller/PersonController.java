@@ -1,5 +1,6 @@
 package com.itrail.react.reactprod.controller;
 
+import com.itrail.react.reactprod.entity.Animal;
 import com.itrail.react.reactprod.entity.Person;
 import com.itrail.react.reactprod.exc.MyException;
 import com.itrail.react.reactprod.responses.BaseResponse;
@@ -8,6 +9,9 @@ import com.itrail.react.reactprod.service.PersonService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -19,6 +23,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequiredArgsConstructor
 public class PersonController implements IPerson {
+
 
     @ExceptionHandler(Throwable.class)
     public Flux<BaseResponse> errBaseResponse( Throwable ex ){
@@ -33,39 +38,58 @@ public class PersonController implements IPerson {
     }  
 
     private final PersonService service;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private Person send = new Person();
 
-    public void sendMessage(String msg) {
-        kafkaTemplate.send("TopicOne", msg);
+    private final KafkaTemplate<String, Person> kafkaTemplate;
+
+    public void sendMessage(Person person) {
+        kafkaTemplate.send("TopicOne", person);
     }
 
     @KafkaListener( topics = "TopicTwo", groupId = "MyGroupTopics")
-    public void getMessageTwo(String message ){
-       log.info( message );
+    public void getMessageTwo( Animal animal ){
+       log.info( "Message from SpringPro >> " + animal.toString() );
     }
 
     public Flux<Person> getAllPerson() throws Exception{
-        sendMessage( "ReactProd -- getAllPerson");
-        return service.allPerson();
+        Flux<Person> response = service.allPerson();
+        response.subscribe( s -> { 
+            send = s;
+            sendMessage( send );
+        });
+        return response;
     }
+    
 
     public Mono<Person> findByIdPerson(Long id ) throws Exception{
-        sendMessage( "ReactProd -- findByIdPerson" + service.findByIdPerson( id).toString() );
-        return service.findByIdPerson( id );
+        Mono<Person> response = service.findByIdPerson( id );
+        response.subscribe( s -> {
+            send = s;
+        });
+        sendMessage( send );
+        return response;
     }
 
     public Mono<Person>  updatePerson( Person person ) throws Exception{
-        sendMessage( "ReactProd -- updatePerson");
-        return service.updatePerson( person );
+        Mono<Person> response = service.updatePerson( person );
+        response.subscribe( s -> {
+            send = s;
+        });
+        sendMessage( send );
+        return response;
     }
 
-    public Mono<Void>  deletePerson( Long id ) throws Exception{
+    public Mono<Void> deletePerson( Long id ) throws Exception{
         return service.deletePerson( id );
     }
 
     public Mono<Person> addPerson( Person person ) throws Exception{
-        sendMessage( "ReactProd -- addPerson");
-        return service.addPerson(person);
+        Mono<Person> response = service.addPerson(person);
+        response.subscribe( s -> {
+            send = s;
+        });
+        sendMessage( send );
+        return response;
     }
 
 }

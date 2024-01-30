@@ -9,6 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
+
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Table
@@ -18,7 +20,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class Person {
+public class Person implements Serializable {
 
     @Id
     @Schema( name        = "id",

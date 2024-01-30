@@ -10,6 +10,8 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 
+import com.itrail.react.reactprod.entity.Animal;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,18 +23,18 @@ public class KafkaConsumerConfig {
     private String bootstrapAddress;
 
     @Bean
-    public ConsumerFactory<String, String> consumerFactory() {
+    public ConsumerFactory<String, Animal> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put( ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress );
         props.put( ConsumerConfig.GROUP_ID_CONFIG, "12345");
         props.put( ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put( ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put( ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "com.itrail.react.reactprod.config.kafka.serializer.AnimalDeserializer");
         return new DefaultKafkaConsumerFactory<>(props);
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, Animal> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Animal> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
