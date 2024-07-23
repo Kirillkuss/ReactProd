@@ -10,6 +10,7 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 
+import com.itrail.react.reactprod.config.kafka.serializer.AnimalDeserializer;
 import com.itrail.react.reactprod.entity.Animal;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class KafkaConsumerConfig {
         props.put( ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress );
         props.put( ConsumerConfig.GROUP_ID_CONFIG, "12345");
         props.put( ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put( ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "com.itrail.react.reactprod.config.kafka.serializer.AnimalDeserializer");
+        props.put( ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, AnimalDeserializer.class );
         return new DefaultKafkaConsumerFactory<>(props);
     }
 

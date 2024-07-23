@@ -19,7 +19,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @SecurityRequirement(name = "Bearer Authentication")
-@RequestMapping(" persons")
+@RequestMapping("persons")
 @Tag( name = "3. PERSONS", description = "CRUD for PERSON")
 public interface IPerson {
 
