@@ -5,10 +5,29 @@ CREATE TABLE Animal(
 	count int
 );
 
-CREATE CAR(
-    id serial PRIMARY KEY,
-    model VARCHAR( 50 ) NOT NULL,
-    timebuy TIMESTAMP NOT NULL,
-    coast int8 NOT NULL,
-    number int4 NOT NULL
+CREATE TABLE Person(
+	id serial PRIMARY KEY,
+	name VARCHAR( 20 ) NOT NULL,
+	login VARCHAR( 20 ) NOT NULL,
+	phone VARCHAR( 13 ) NOT NULL,
+	wallet int8 NOT NULL
+);
+
+CREATE TABLE person_animal(
+	idAnimal INTEGER references animal( id ),
+	idPerson INTEGER references person( id ) 
+)
+
+CREATE TABLE Users(
+	id serial PRIMARY KEY,
+	username VARCHAR( 50 ) NOT NULL,
+	password_user VARCHAR( 250 ) NOT NULL,
+	role_user VARCHAR( 50 ) NOT NULL,
+	email VARCHAR( 50 ) 
+);
+
+CREATE TABLE Images(
+	id serial PRIMARY KEY,
+	imagename text NOT NULL,
+	img bytea NOT NULL
 );
