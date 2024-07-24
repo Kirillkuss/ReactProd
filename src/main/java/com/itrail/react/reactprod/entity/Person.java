@@ -13,7 +13,7 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Table(name = "car")
+@Table(name = "person")
 @Setter
 @Getter
 @AllArgsConstructor

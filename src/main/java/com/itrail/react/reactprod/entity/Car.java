@@ -15,7 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Table
+@Table(name = "car")
 @Setter
 @Getter
 @EqualsAndHashCode
