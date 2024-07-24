@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Table
+@Table(name = "car")
 @Setter
 @Getter
 @AllArgsConstructor
@@ -23,26 +23,31 @@ import java.math.BigDecimal;
 public class Person implements Serializable {
 
     @Id
+    @Column("id")
     @Schema( name        = "id",
              description = "ИД",
              example     = "5")
     private Long id;
 
+    @Column("name")
     @Schema( name        = "name",
              description = "Имя",
              example     = "REACT" )
     private String name;
 
+    @Column("login")
     @Schema( name        = "login",
              description = "Логин",
              example     = "Potr@mail.com" )
     private String login;
 
+    @Column("phone")
     @Schema( name        = "phone",
              description = "Номер телефона",
              example     = "+375252344657" )
     private String phone;
 
+    @Column("wallet")
     @Schema( name        = "wallet",
              description = "Кошелек",
              example     = "5000" )

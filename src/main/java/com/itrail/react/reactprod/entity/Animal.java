@@ -1,6 +1,5 @@
 package com.itrail.react.reactprod.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -10,13 +9,10 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
-@Table
+@Table(name = "animal")
 @Setter
 @Getter
 @EqualsAndHashCode

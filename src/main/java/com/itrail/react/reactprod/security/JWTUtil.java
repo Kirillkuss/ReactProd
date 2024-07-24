@@ -15,10 +15,10 @@ import java.util.Map;
 @Component
 public class JWTUtil {
 
-    @Value("${springbootwebfluxjjwt.jjwt.secret}")
+    @Value("${spring.webflux.jwt.secret}")
     private String secret;
 
-    @Value("${springbootwebfluxjjwt.jjwt.expiration}")
+    @Value("${spring.webflux.jwt.expiration}")
     private String expirationTime;
 
     private Key key;
@@ -45,22 +45,19 @@ public class JWTUtil {
         return expiration.before(new Date());
     }
 
-    public String generateToken(User user) {
+    public String generateToken(User users) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", user.getRoles());
-        return doGenerateToken(claims, user.getUsername());
+        claims.put("role", users.getRole());
+        return doGenerateToken(claims, users.getUsername());
     }
 
     private String doGenerateToken(Map<String, Object> claims, String username) {
-        Long expirationTimeLong = Long.parseLong(expirationTime); //in second
         final Date createdDate = new Date();
-        final Date expirationDate = new Date(createdDate.getTime() + expirationTimeLong * 1000);
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(createdDate)
-                .setExpiration(expirationDate)
+                .setExpiration(new Date(createdDate.getTime() + Long.parseLong(expirationTime) * 10)) // 1 min
                 .signWith(key)
                 .compact();
     }

@@ -12,13 +12,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @Slf4j
 @SpringBootApplication
-@OpenAPIDefinition(info = @Info(title = "API for React", version = "3.0", description = "REACT"))
-@SecurityScheme(
-        name = "Bearer Authentication",
-        type = SecuritySchemeType.HTTP,
-        bearerFormat = "JWT",
-        scheme = "bearer"
-)
+@OpenAPIDefinition( info = @Info( title = "API for React", version = "3.0", description = "REACT"))
+@SecurityScheme( name = "Bearer Authentication",
+                 type = SecuritySchemeType.HTTP,
+                 bearerFormat = "JWT",
+                 scheme = "bearer")
 public class ReactProdApplication {
 
     public static void main(String[] args) {

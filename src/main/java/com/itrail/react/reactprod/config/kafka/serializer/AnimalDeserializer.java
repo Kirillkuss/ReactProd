@@ -9,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AnimalDeserializer implements Deserializer<Animal>{
 
-    private ObjectMapper om = new ObjectMapper();
-
     @Override
     public Animal deserialize(String topic, byte[] data) {
         try {
@@ -19,7 +17,7 @@ public class AnimalDeserializer implements Deserializer<Animal>{
                 return null;
             }
             log.info( "Deserializing entity Animal...");
-            return om.readValue( new String( data, "UTF-8" ), Animal.class);
+            return new ObjectMapper().readValue( new String( data, "UTF-8" ), Animal.class);
         } catch ( Exception e ) {
             throw new SerializationException( "Error when deserializing byte[] to Animal" );
         }

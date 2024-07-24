@@ -8,8 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class PersonSerializer implements Serializer<Person> {
-    
-     private final ObjectMapper om = new ObjectMapper();
 
     @Override
     public byte[] serialize(String topic, Person person) {
@@ -19,7 +17,7 @@ public class PersonSerializer implements Serializer<Person> {
                 return null;
             }
             log.info( "Serializing entity Person..." );
-            return om.writeValueAsBytes( person );
+            return new ObjectMapper().writeValueAsBytes( person );
         } catch ( Exception e ) {
             throw new SerializationException( "Error when serializing Animal to byte[]" );
         }
