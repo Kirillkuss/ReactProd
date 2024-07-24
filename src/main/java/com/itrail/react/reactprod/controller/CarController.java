@@ -1,12 +1,15 @@
 package com.itrail.react.reactprod.controller;
 
 import com.itrail.react.reactprod.entity.Car;
-import com.itrail.react.reactprod.exc.MyException;
-import com.itrail.react.reactprod.responses.BaseResponse;
+import java.util.NoSuchElementException;
+import com.itrail.react.reactprod.responses.BaseResponseError;
 import com.itrail.react.reactprod.rest.ICar;
 import com.itrail.react.reactprod.service.CarService;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
@@ -18,18 +21,17 @@ import reactor.core.publisher.Mono;
 public class CarController implements ICar {
 
     @ExceptionHandler(Throwable.class)
-    public Flux<BaseResponse> errBaseResponse( Throwable ex ){
-        ex.printStackTrace(System.err );
+    public Mono<ResponseEntity<BaseResponseError>> errBaseResponse( Throwable ex ){
         log.error( ex.getMessage());
-        return Flux.just(  new BaseResponse<>( 500, ex.getMessage() ));
+        return Mono.just( ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR).body( new BaseResponseError( 500, ex.getMessage())));
     }
 
-    @ExceptionHandler(MyException.class)
-    public Flux<BaseResponse> errBaseResponse( MyException ex ){
+    @ExceptionHandler(NoSuchElementException.class)
+    public Mono<ResponseEntity<BaseResponseError>> errBaseResponse( NoSuchElementException ex ){
         log.error( ex.getMessage());
-        return Flux.just( new BaseResponse<>( ex.getCode(), ex.getMessage() ));
-    }  
-
+        return Mono.just( ResponseEntity.status( HttpStatus.BAD_REQUEST).body( new BaseResponseError( 400, ex.getMessage())));
+    } 
+    
     private final CarService service;
 
     public Flux<Car> allCars() throws Exception{

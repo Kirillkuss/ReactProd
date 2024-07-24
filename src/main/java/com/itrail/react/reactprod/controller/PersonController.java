@@ -2,17 +2,17 @@ package com.itrail.react.reactprod.controller;
 
 import com.itrail.react.reactprod.entity.Animal;
 import com.itrail.react.reactprod.entity.Person;
-import com.itrail.react.reactprod.exc.MyException;
 import com.itrail.react.reactprod.responses.BaseResponse;
+import com.itrail.react.reactprod.responses.BaseResponseError;
 import com.itrail.react.reactprod.rest.IPerson;
 import com.itrail.react.reactprod.service.PersonService;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import java.math.BigDecimal;
-
+import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -26,15 +26,15 @@ public class PersonController implements IPerson {
 
 
     @ExceptionHandler(Throwable.class)
-    public Flux<BaseResponse> errBaseResponse( Throwable ex ){
+    public Mono<ResponseEntity<BaseResponseError>> errBaseResponse( Throwable ex ){
         log.error( ex.getMessage());
-        return Flux.just(  new BaseResponse<>( 500, ex.getMessage() ));
+        return Mono.just( ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR).body( new BaseResponseError( 500, ex.getMessage())));
     }
 
-    @ExceptionHandler(MyException.class)
-    public Flux<BaseResponse> errBaseResponse( MyException ex ){
+    @ExceptionHandler(NoSuchElementException.class)
+    public Mono<ResponseEntity<BaseResponseError>> errBaseResponse( NoSuchElementException ex ){
         log.error( ex.getMessage());
-        return Flux.just( new BaseResponse<>( ex.getCode(), ex.getMessage() ));
+        return  Mono.just( ResponseEntity.status( HttpStatus.BAD_REQUEST).body( new BaseResponseError( 400, ex.getMessage())));
     }  
 
     private final PersonService service;

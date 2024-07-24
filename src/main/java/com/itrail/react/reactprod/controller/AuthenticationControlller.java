@@ -22,7 +22,7 @@ public class AuthenticationControlller implements IAuthentication {
         return usersService.findByLogin(authRequest.getUsername())
                            .filter( filter -> usersService.checkUserPassword( authRequest.getPassword(), filter.getPassword() ))
                                 .map( users -> ResponseEntity.status( HttpStatus.OK )
-                                    .header( "X-AUTH-TOKEN", jwtUtil.generateToken( users ))
+                                   // .header( "X-AUTH-TOKEN", jwtUtil.generateToken( users ))
                                     .body( new AuthResponse( 200, jwtUtil.generateToken( users ))))
                                     .switchIfEmpty( Mono.just( ResponseEntity.status( HttpStatus.UNAUTHORIZED )
                                     .body( new AuthResponse( 401, "Invalid login or password" ))));

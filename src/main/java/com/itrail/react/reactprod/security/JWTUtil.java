@@ -57,7 +57,7 @@ public class JWTUtil {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(createdDate)
-                .setExpiration(new Date(createdDate.getTime() + Long.parseLong(expirationTime) * 10)) // 1 min
+                .setExpiration(new Date(createdDate.getTime() + Long.parseLong(expirationTime) * 100)) // 10 minutes
                 .signWith(key)
                 .compact();
     }
