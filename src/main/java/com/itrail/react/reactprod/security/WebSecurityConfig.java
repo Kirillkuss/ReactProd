@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -24,7 +23,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityWebFilterChain securitygWebFilterChain(ServerHttpSecurity http) {
         return http.exceptionHandling( handling -> handling
-                        .authenticationEntryPoint(( swe, e ) -> Mono.fromRunnable(() -> swe.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED)))
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                         .accessDeniedHandler(( swe, e ) -> Mono.fromRunnable(() -> swe.getResponse().setStatusCode( HttpStatus.FORBIDDEN ))))
                         .csrf( csrf -> csrf.disable()
                                 .formLogin( login -> login

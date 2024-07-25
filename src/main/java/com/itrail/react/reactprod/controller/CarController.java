@@ -5,7 +5,6 @@ import java.util.NoSuchElementException;
 import com.itrail.react.reactprod.responses.BaseResponseError;
 import com.itrail.react.reactprod.rest.ICar;
 import com.itrail.react.reactprod.service.CarService;
-import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,7 @@ public class CarController implements ICar {
     public Mono<ResponseEntity<BaseResponseError>> errBaseResponse( NoSuchElementException ex ){
         log.error( ex.getMessage());
         return Mono.just( ResponseEntity.status( HttpStatus.BAD_REQUEST).body( new BaseResponseError( 400, ex.getMessage())));
-    } 
+    }
     
     private final CarService service;
 

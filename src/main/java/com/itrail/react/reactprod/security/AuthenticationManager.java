@@ -1,6 +1,7 @@
 package com.itrail.react.reactprod.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
@@ -34,7 +35,7 @@ public class AuthenticationManager implements ReactiveAuthenticationManager {
                                                                                                       .map(SimpleGrantedAuthority::new)
                                                                                                       .collect(Collectors.toList()));
                                 });
-        }catch( Exception ex ){
+        }catch( ExpiredJwtException ex ){
             log.error( ex.getMessage() );
             return Mono.empty();
         }
