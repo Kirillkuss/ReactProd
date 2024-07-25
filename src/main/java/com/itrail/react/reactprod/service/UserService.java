@@ -55,22 +55,39 @@ public class UserService {
     private boolean isValidPassword(String password) {
         return password.length() >= 8 && password.matches(".*[A-Za-z].*") && password.matches(".*\\d.*");
     }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[\\w-\\.]+@[\\w-]+\\.[a-zA-Z]{2,4}$";
+        return email != null && email.matches(emailRegex);
+    }
     /**
      * Add user
      * @param user - user
      * @return Mono<User>
-     */ public Mono<Object> addUser(User user) {
-        if (!isValidPassword( user.getPassword())) throw new  IllegalArgumentException("Password does not meet complexity requirements!");
-        return userRepository.findByLogin(user.getUsername())
-                             .flatMap(existingUser -> {
-                                    return Mono.error(new IllegalArgumentException("Not unique username, please specify another!"));
-                              })
-                              .switchIfEmpty(Mono.defer(() -> {
-                                    String salt = generateSalt();
-                                    user.setRole( "test");
-                                    user.setPassword( passwordEncoder.encode( secret + user.getPassword() + salt ));
-                                    user.setSalt(salt);
-                                    return userRepository.save(user);
+     */
+    public Mono<Object> addUser(User user) {
+        if (!isValidPassword( user.getPassword())){
+            return Mono.error( new IllegalArgumentException("Password does not meet complexity requirements!"));
+        } 
+        if (!isValidEmail(user.getEmail())) {
+            return Mono.error(new IllegalArgumentException("Invalid email format!"));
+        }
+        return userRepository.findByLogin( user.getUsername() )
+                             .flatMap( existingUser -> {
+                                return Mono.error(new IllegalArgumentException("Not unique username, please specify another!"));
+                                })
+                             .switchIfEmpty(Mono.defer(() -> {
+                                return userRepository.findByEmail( user.getEmail() )
+                                    .flatMap(existingEmailUser -> {
+                                        return Mono.error(new IllegalArgumentException("Email already in use, please specify another!"));
+                                    })
+                                    .switchIfEmpty(Mono.defer(() -> {
+                                        String salt = generateSalt();
+                                        user.setRole("test");
+                                        user.setPassword(passwordEncoder.encode(secret + user.getPassword() + salt));
+                                        user.setSalt(salt);
+                                        return userRepository.save(user);
+                                        }));
                                 }));
     }
 
