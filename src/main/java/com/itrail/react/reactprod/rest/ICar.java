@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.itrail.react.reactprod.entity.Car;
+import com.itrail.react.reactprod.responses.BaseResponseError;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,8 +28,8 @@ public interface ICar {
     @Operation( description = "Полуение списка Car", summary = "Полуение списка Car")
     @ApiResponses(value = {
         @ApiResponse( responseCode = "200", description = "Found List Car ",   content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = Car.class ))) }),
-        @ApiResponse( responseCode = "400", description = "Bad request",       content = { @Content(mediaType = "application/json") }),
-        @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json") })
+        @ApiResponse( responseCode = "400", description = "Bad request",       content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) }),
+        @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) })
     })
     public Flux<Car> allCars() throws Exception;
 
@@ -35,8 +37,8 @@ public interface ICar {
     @Operation( description = "Полуение Car по ID", summary = "Полуение Car по ID")
     @ApiResponses(value = {
         @ApiResponse( responseCode = "200", description = "Found Car by ID",   content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = Car.class ))) }),
-        @ApiResponse( responseCode = "400", description = "Bad request",       content = { @Content(mediaType = "application/json") }),
-        @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json") })
+        @ApiResponse( responseCode = "400", description = "Bad request",       content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) }),
+        @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) })
     })
     public Mono<Car> findCarById( Long id ) throws Exception;
 
@@ -44,8 +46,8 @@ public interface ICar {
     @Operation( description = "Обновление Car", summary = "Обновление Car")
     @ApiResponses(value = {
         @ApiResponse( responseCode = "200", description = "Update Car",        content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = Car.class ))) }),
-        @ApiResponse( responseCode = "400", description = "Bad request",       content = { @Content(mediaType = "application/json") }),
-        @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json") })
+        @ApiResponse( responseCode = "400", description = "Bad request",       content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) }),
+        @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) })
     })
     public Mono<Car> updateCar( Car car ) throws Exception;
 
@@ -53,8 +55,8 @@ public interface ICar {
     @Operation( description = "Добавление Car", summary = "Добавление Car")
     @ApiResponses(value = {
         @ApiResponse( responseCode = "200", description = "Create Car ",       content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = Car.class ))) }),
-        @ApiResponse( responseCode = "400", description = "Bad request",       content = { @Content(mediaType = "application/json") }),
-        @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json") })
+        @ApiResponse( responseCode = "400", description = "Bad request",       content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) }),
+        @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) })
     })
     public Mono<Car> createCar( Car car ) throws Exception;
 

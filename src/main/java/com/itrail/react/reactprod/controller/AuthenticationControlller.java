@@ -20,7 +20,7 @@ public class AuthenticationControlller implements IAuthentication {
 
     public Mono<ResponseEntity<AuthResponse>> login( AuthRequest authRequest ) {
         return usersService.findByLogin(authRequest.getUsername())
-                           .filter( filter -> usersService.checkUserPassword( authRequest.getPassword(), filter.getPassword() ))
+                           .filter( filter -> usersService.checkUserPassword( authRequest.getPassword(), filter.getSalt(), filter.getPassword() ))
                                 .map( users -> ResponseEntity.status( HttpStatus.OK )
                                    // .header( "X-AUTH-TOKEN", jwtUtil.generateToken( users ))
                                     .body( new AuthResponse( 200, jwtUtil.generateToken( users ))))

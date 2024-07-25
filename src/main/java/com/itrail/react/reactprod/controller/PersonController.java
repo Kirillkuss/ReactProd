@@ -2,15 +2,12 @@ package com.itrail.react.reactprod.controller;
 
 import com.itrail.react.reactprod.entity.Animal;
 import com.itrail.react.reactprod.entity.Person;
-import com.itrail.react.reactprod.responses.BaseResponse;
 import com.itrail.react.reactprod.responses.BaseResponseError;
 import com.itrail.react.reactprod.rest.IPerson;
 import com.itrail.react.reactprod.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import java.math.BigDecimal;
 import java.util.NoSuchElementException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;

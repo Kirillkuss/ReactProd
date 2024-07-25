@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.itrail.react.reactprod.entity.Person;
+import com.itrail.react.reactprod.responses.BaseResponseError;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,25 +38,25 @@ public interface IPerson {
     @Operation( description = "Получение Person по ID", summary = "Получение Person по ID")
     @ApiResponses(value = {
         @ApiResponse( responseCode = "200", description = "Found the Person by ID", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = Person.class ))) }),
-        @ApiResponse( responseCode = "400", description = "Bad request",            content = { @Content(mediaType = "application/json") }),
-        @ApiResponse( responseCode = "500", description = "System malfunction",     content = { @Content(mediaType = "application/json") })
+        @ApiResponse( responseCode = "400", description = "Bad request",            content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) }),
+        @ApiResponse( responseCode = "500", description = "System malfunction",     content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) })
     })
     public Mono<Person> findByIdPerson( Long id ) throws Exception;
 
     @PostMapping( "/update")
     @Operation( description = "Обновление Person", summary = "Обновление Person")
     @ApiResponses(value = {
-        @ApiResponse( responseCode = "200", description = "Update Person ",     content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = Person.class ))) }),
-        @ApiResponse( responseCode = "400", description = "Bad request",        content = { @Content(mediaType = "application/json") }),
-        @ApiResponse( responseCode = "500", description = "System malfunction", content = { @Content(mediaType = "application/json") })
+        @ApiResponse( responseCode = "200", description = "Update Person ",    content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = Person.class ))) }),
+        @ApiResponse( responseCode = "400", description = "Bad request",       content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) }),
+        @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) })
     })
     public Mono<Person>  updatePerson( @RequestBody Person person ) throws Exception;
 
     @Operation( description = "Удаление Person", summary = "Удаление Person")
     @ApiResponses(value = {
-        @ApiResponse( responseCode = "200", description = "Delete Person ",     content = { @Content(mediaType = "application/json") }),
-        @ApiResponse( responseCode = "400", description = "Bad request",        content = { @Content(mediaType = "application/json") }),
-        @ApiResponse( responseCode = "500", description = "System malfunction", content = { @Content(mediaType = "application/json") })
+        @ApiResponse( responseCode = "200", description = "Delete Person ",    content = { @Content(mediaType = "application/json") }),
+        @ApiResponse( responseCode = "400", description = "Bad request",       content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) }),
+        @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) })
     })
     @DeleteMapping( "delete/{id}")
     public Mono<Void> deletePerson( Long id ) throws Exception;
@@ -62,9 +64,9 @@ public interface IPerson {
     @PutMapping("create")
     @Operation( description = "Добавление Person", summary = "Добавление Person")
     @ApiResponses(value = {
-        @ApiResponse( responseCode = "200", description = "Create Person ",     content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = Person.class ))) }),
-        @ApiResponse( responseCode = "400", description = "Bad request",        content = { @Content(mediaType = "application/json") }),
-        @ApiResponse( responseCode = "500", description = "System malfunction", content = { @Content(mediaType = "application/json") })
+        @ApiResponse( responseCode = "200", description = "Create Person ",    content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = Person.class ))) }),
+        @ApiResponse( responseCode = "400", description = "Bad request",       content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) }),
+        @ApiResponse( responseCode = "500", description = "System malfunction",content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema( implementation = BaseResponseError.class ))) })
     })
     public Mono<Person> addPerson( @RequestBody Person person ) throws Exception;
     
