@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-//http://localhost:8081/webjars/swagger-ui/index.html
+//http://localhost:8087/webjars/swagger-ui/index.html
 
 @Slf4j
 @SpringBootApplication
